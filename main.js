@@ -8,7 +8,7 @@ const buttonAdd = document.querySelector('#bAdd');
 const eventsContainer = document.querySelector('#eventsContainer');
 
 const json = load();
-console.log(JSON.parse(json));
+// console.log(JSON.parse(json));
 
 try {
     arr = JSON.parse(json);
@@ -19,9 +19,12 @@ events = arr ? [...arr] : [];
 
 renderEvents();
 
-
-
 document.querySelector('form').addEventListener('submit', e => {
+    e.preventDefault();
+    addEvent();
+});
+
+buttonAdd.addEventListener('click', e => {
     e.preventDefault();
     addEvent();
 });
@@ -78,18 +81,16 @@ function renderEvents() {
         button.addEventListener('click', e => {
             const id = button.getAttribute('data-id');
             events = events.filter((event) => event.id !== id);
-
+            save(JSON.stringify(events));
             renderEvents();
         });
     });
 }
 
 function save(data) {
-   localStorage.setItem('items', data);
+    localStorage.setItem('items', data);
 }
 
 function load() {
-    localStorage.getItem('items', {});
+    return localStorage.getItem('items');
 }
-
-console.log('Items ->',localStorage.getItem('items'));
